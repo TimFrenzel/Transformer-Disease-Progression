@@ -1,0 +1,21 @@
+name: transformer_clinicalbert_mimic4_gpu
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy=1.24
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=11.8
+  - pandas
+  - duckdb
+  - scikit-learn
+  - tqdm
+  - shap
+  - transformers
+  - matplotlib
+  - pyarrow
