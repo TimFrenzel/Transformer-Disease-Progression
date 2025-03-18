@@ -2,51 +2,91 @@
 
 ## Abstract
 
-Accurate prediction of disease progression remains an ongoing challenge within healthcare informatics, particularly when clinicians attempt to leverage unstructured clinical notes alongside structured diagnostic codes. This project presents a transformer-based approach—ClinicalBERT—to predict patient disease progression by analyzing discharge summaries and structured diagnosis data from the comprehensive Medical Information Mart for Intensive Care (MIMIC-IV) dataset. Specifically, this study aims to predict the onset of a secondary condition (e.g., sepsis) based on prior medical encounters that document a related primary condition (e.g., pneumonia).
+Predicting disease progression remains a critical challenge in clinical decision support and risk stratification, demanding models capable of synthesizing complex patient histories from diverse data sources. This project introduces SELF-cBERT-Trans, a transformer-based framework that integrates ClinicalBERT to predict patient disease trajectories using discharge summaries and structured diagnosis codes (ICD-9 and ICD-10) from MIMIC-IV on FHIR. The model incorporates both free-text clinical narratives and structured diagnostic data to construct a comprehensive representation of patient health trajectories, improving the identification of high-risk individuals. Designed to detect patients at risk of developing secondary conditions based on prior admissions, the framework supports proactive medical interventions and enhances longitudinal patient management.
 
-Clinical narratives in discharge summaries offer nuanced, context-rich information that traditional structured data alone often fail to capture. In contrast, structured International Classification of Diseases (ICD-9 and ICD-10) codes provide definitive, clinically validated diagnoses and timelines. This work integrates these two modalities—unstructured text and structured clinical coding—to develop a powerful predictive framework capable of identifying patients at risk of disease progression early. The methodology involves fine-tuning ClinicalBERT alongside conventional baseline models and evaluating performance through explainable AI methods such as SHAP analysis and transformer attention visualization.
-
-The results show substantial improvements in predictive accuracy and model interpretability compared to traditional machine learning baselines, demonstrating the potential of transformer-based models in clinical risk stratification and decision support.
+This approach advances traditional predictive modeling through the integration of context-rich clinical narratives and structured disease codes, providing a more holistic view of patient health status. ClinicalBERT embeddings extract latent signals from text, while structured ICD codes establish a validated foundation for labeling, maintaining consistency in disease tracking across multiple admissions. Model performance is assessed against conventional baselines such as TF-IDF + Logistic Regression, demonstrating the advantages of deep contextual embeddings. Additionally, SHAP interpretability and attention-weight analysis enhance transparency in decision-making, aligning model outputs with clinical reasoning and reinforcing trust in AI-driven risk stratification.
 
 ---
 
 ## Project Objectives
 
-- **Leverage ClinicalBERT**—a domain-specific transformer model—to effectively capture context from clinical notes and accurately predict subsequent disease progression events.
-- **Integrate structured diagnosis data (ICD-9 and ICD-10)** from MIMIC-IV on FHIR, enhancing labeling precision and reliability.
-- **Address missing structured ICD codes** by dynamically retrieving standardized mappings via external medical classification APIs (WHO ICD API).
-- **Benchmark ClinicalBERT performance** against classical baseline approaches, specifically TF-IDF with Logistic Regression.
-- **Provide interpretability and clinical insights** through SHAP (SHapley Additive exPlanations) and attention mechanisms inherent to transformer models.
+- **Develop a ClinicalBERT-based disease progression model** by integrating unstructured discharge summaries with structured ICD-9 and ICD-10 diagnoses.
+- **Improve predictive accuracy and interpretability** by incorporating both textual embeddings and structured codes into a transformer-based framework.
+- **Benchmark against classical baselines (TF-IDF + Logistic Regression)** to assess model efficacy.
+- **Employ explainability techniques (SHAP, transformer attention weights)** to enhance interpretability for clinical adoption.
+- **Provide a modular and scalable pipeline** for research reproducibility and real-world applicability in clinical settings.
 
 ---
 
 ## Methodological Framework
 
-### Data Extraction & Preprocessing
-Clinical narratives from MIMIC-IV-Note were systematically preprocessed, including tokenization, normalization, stopword removal (with retention of key clinical terminology), and section segmentation to facilitate meaningful transformer input. ICD-9 and ICD-10 diagnoses were extracted from structured MIMIC-IV on FHIR data, providing verified labels of patient conditions across multiple admissions.
+### **1. Clinical Interpretability Workflow**
+To ensure **clinically actionable insights**, the model's predictions are interpreted at multiple levels.
 
-### Feature Engineering
-Clinical notes were encoded into embedding vectors using ClinicalBERT. A baseline model, leveraging Term Frequency-Inverse Document Frequency (TF-IDF) vectorization, provided comparative insights into embedding effectiveness. Embeddings were cached to optimize computational resources, enabling iterative experimentation and model refinement.
+![Clinical Interpretability Workflow](images/clinical_interpretability_workflow.jpg)
 
-### Model Training and Evaluation
-ClinicalBERT was fine-tuned to perform binary classification tasks predicting disease progression (e.g., pneumonia to sepsis) using labeled embeddings. Training employed sophisticated methods including gradient accumulation, mixed-precision training, and early stopping. Models were rigorously evaluated with metrics such as Area Under Receiver Operating Characteristic Curve (AUROC), precision, recall, and F1-score, and compared to traditional baseline methods.
+- **Baseline Model Analysis:** SHAP values reveal the most predictive textual features, while TF-IDF coefficients offer insights into term significance.
+- **Transformer Model Analysis:** Attention weights highlight text segments influencing predictions, enhancing interpretability.
+- **Comparative Metrics:** Model performance is evaluated across time windows using ROC curves, PR curves, and confusion matrices.
 
-### Model Interpretability and Explainability
-Explainability was prioritized, employing SHAP to elucidate critical textual predictors within clinical notes and transformer attention mechanisms to visually dissect model decision-making processes. These approaches offered clinicians clear, actionable insights into disease progression predictions.
+The model provides **patient risk stratification** into **high-risk, medium-risk, and low-risk groups**, enabling targeted interventions such as ICU prioritization, tailored therapy selection, and enhanced monitoring.
+
+### **2. Clinical Text Processing Pipeline**
+The **preprocessing pipeline** ensures that transformer models effectively utilize clinical text while preserving medically relevant information.
+
+![Clinical Text Processing Pipeline](images/clinical_text_processing_pipeline.jpg)
+
+- **Raw Clinical Text Processing:** Discharge summaries undergo **boilerplate removal, de-identification, and medical terminology preservation** to optimize model input.
+- **Structured Section Extraction:** Key sections—**History, Physical Exam, Assessment, Plan**—are identified for more granular processing.
+- **Feature Generation:** Multi-modal features are created, including **TF-IDF vectors, section-specific embeddings, and ClinicalBERT representations**.
+
+By structuring textual input, the model learns **clinically meaningful patterns**, improving its predictive accuracy and interpretability.
+
+### **3. End-to-End Data Integration Pipeline**
+To merge structured ICD codes with free-text notes, a **robust data integration pipeline** is implemented.
+
+![End-to-End Data Integration Pipeline](images/end_to_end_data_integration_pipeline.jpg)
+
+- **MIMIC-IV FHIR Data & Clinical Notes** are merged using patient **encounter references**.
+- **DuckDB Integration** enables efficient querying and dataset processing.
+- **ICD Code Processing & Patient Timeline Creation** allow structured disease progression tracking.
+
+Dataset stratification is designed to **prevent data leakage** and ensure **robust evaluation**:
+- **Training Set (80%)**: Patient-level separation with multi-window progression labeling.
+- **Validation Set (10%)**: Used for early stopping and hyperparameter tuning.
+- **Test Set (10%)**: Ensures held-out evaluation with no patient overlap.
+
+### **4. Memory-Optimized Transformer Implementation**
+Due to computational constraints, the transformer architecture is optimized for efficient training and inference.
+
+![Memory-Optimized Transformer Implementation](images/memory_optimized_transformer_implementation.jpg)
+
+- **ClinicalBERT Base:** Pre-trained on a medical corpus with **12 attention heads and 768 hidden dimensions**, optimized for clinical narratives.
+- **Custom Classification Head:** Incorporates **structured ICD features** and **section-aware token processing**.
+- **Memory Optimization Techniques:**
+  - **Gradient Accumulation & Checkpointing:** Enables batch size scaling while maintaining memory efficiency.
+  - **Mixed Precision (FP16):** Reduces memory footprint by **50%**, improving training scalability.
+  - **Focal Loss Implementation:** Adjusts class imbalance dynamically, focusing learning on **rare disease progression cases**.
+
+By leveraging these optimization techniques, ClinicalBERT can be **trained efficiently** while maintaining state-of-the-art performance in disease progression modeling.
 
 ---
 
 ## Significance and Contributions
 
-This research advances the predictive capabilities of clinical decision support systems (CDSS) through the effective combination of structured diagnostic codes and unstructured clinical narratives using advanced transformer-based language models. The integration of multimodal data sources enhances model performance, allowing healthcare practitioners to identify high-risk patient groups proactively and facilitating timely intervention to improve clinical outcomes.
+This research advances the predictive capabilities of **clinical decision support systems (CDSS)** by effectively integrating structured diagnostic codes and unstructured clinical narratives using **state-of-the-art transformer-based models**. The fusion of **multi-modal data sources** enhances model performance, supporting early detection of **high-risk patient cohorts** and facilitating **timely clinical interventions**.
 
 ---
 
-## Ethical Considerations and Data Usage Note
+## Ethical Considerations and Data Usage
 
-The data utilized in this research, sourced from the MIMIC-IV dataset, adhere strictly to PhysioNet’s established data use agreements to ensure patient confidentiality and privacy. Consequently, the dataset or derived patient-specific data are not included within this repository. Researchers interested in accessing these data must obtain explicit authorization from PhysioNet, complying with all stipulated conditions of use and patient privacy protections.
+This research adheres to **MIMIC-IV Data Use Agreements (DUA)** to ensure patient privacy and compliance with regulatory guidelines. **No patient data is shared in this repository**, and all data must be accessed through **PhysioNet under controlled conditions**.
 
-For detailed information and access protocols, please consult the [PhysioNet MIMIC-IV database](https://physionet.org/content/mimiciv/).
+- **Data cannot be publicly distributed** due to de-identification constraints.
+- **Model outputs must be used responsibly** to prevent biased or misleading clinical applications.
+- **Researchers must obtain MIMIC-IV access independently** to replicate results.
+
+For dataset access and compliance, refer to the [PhysioNet MIMIC-IV database](https://physionet.org/content/mimiciv/).
 
 ---
 
