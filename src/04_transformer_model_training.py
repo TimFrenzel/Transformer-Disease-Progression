@@ -1,6 +1,5 @@
 """
-Version: v1.92
-Author:
+Version: v2.10
 Date: March 2025
 
 Purpose:
@@ -18,7 +17,6 @@ Purpose:
 Input:
     - Tokenized/cleaned text data from a DuckDB or CSV
     - Label column for binary classification
-    - Developer placeholders for file paths, hyperparameters, or API keys
 
 Output:
     - Trained transformer model

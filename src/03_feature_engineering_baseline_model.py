@@ -1,6 +1,5 @@
 """
-Version: v1.10
-Author: 
+Version: v1.90
 Date: March 2025
 
 Purpose:
@@ -18,7 +17,6 @@ Purpose:
 Input:
     - Preprocessed/cleaned text data (e.g., from DuckDB or CSV)
     - Optional structured data (demographics, numeric fields)
-    - Developer placeholders for file paths, parameters, or API keys
 
 Output:
     - TF-IDF vectorizer and sparse matrices saved (if applicable)

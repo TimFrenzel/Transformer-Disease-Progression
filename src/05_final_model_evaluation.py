@@ -1,6 +1,5 @@
 """
-Version: v1.80
-Author: 
+Version: v1.80 
 Date: March 2025
 
 Purpose:
@@ -15,11 +14,10 @@ Input:
     - Preprocessed test data from DuckDB or CSV
     - Baseline model (LogisticRegression) in joblib/pickle format
     - Transformer model checkpoint directory (Hugging Face format)
-    - Developer placeholders for file paths, parameters, or API keys
 
 Output:
     - Consolidated metrics for baseline and transformer
-    - (Optional) confusion matrices, ROC, PR curves
+    - Confusion matrices, ROC, PR curves
     - Detailed logs of final performance
 """
 

@@ -1,6 +1,5 @@
 """
 Version: v1.64
-Author: 
 Date: March 2025
 
 Purpose:
@@ -10,12 +9,11 @@ Purpose:
     - Convert a large CSV (e.g., discharge.csv.gz) to multiple Parquet files using chunk-based processing
     - Demonstrate basic SQL-based EDA using DuckDB (schema extraction, row counts, sample queries)
     - Produce a brief timeline visualization for selected patients
-    - Generate at least 3 relevant, well-designed EDA plots for note files and FHIR resources
+    - Produce relevant, well-designed EDA plots for note files and FHIR resources
 
 Input:
     - Large MIMIC-IV CSV/Parquet files (discharge, discharge_detail, radiology, radiology_detail)
     - FHIR NDJSON files (MimicCondition, MimicEncounter, MimicPatient, etc.)
-    - Developer placeholders for file paths and parameters
 
 Output:
     - Environment checks (Python version, GPU availability)

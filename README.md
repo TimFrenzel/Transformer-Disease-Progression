@@ -18,6 +18,26 @@ This approach advances traditional predictive modeling through the integration o
 
 ---
 
+## System Requirements and Dataset Considerations
+
+### Code Execution and Hardware Considerations
+
+The codebase provided in the `src` folder is designed for **local execution**, as it integrates data from **MIMIC-IV on FHIR** and **MIMIC-IV-Note: Deidentified Free-Text Clinical Notes**, both of which are **not publicly available**. Due to access restrictions, researchers must independently obtain dataset credentials via [PhysioNet](https://physionet.org/content/mimiciv/) to ensure compliance with its data use agreement (DUA).  
+
+Additionally, the workflow is **optimized for local GPU execution**, leveraging **CUDA-accelerated computations** for ClinicalBERT fine-tuning and embedding generation. The total dataset size is approximately **2.2GB (compressed)**, while the integrated **DuckDB database (`mimic_integrated.duckdb`) expands to 2.86GB** after processing.  
+
+For users without a local GPU, the following alternatives are recommended:  
+- Google Colab (Pro): Provides GPU resources, but data must be manually uploaded.  
+- CPU Execution: Modify transformer training scripts to reduce memory overhead, adjust batch sizes, and disable mixed precision (FP16).  
+
+### Why MIMIC-IV? 
+MIMIC-IV, published by the MIT Laboratory for Computational Physiology, was selected for its extensive coverage of real-world clinical settings and rich integration of structured and unstructured patient data. As the largest openly available ICU dataset, it enables deep learning applications in disease progression modeling:  
+- Free-text clinical notes capture detailed narratives beyond structured EHRs.  
+- Extensive ICU records support high-quality predictive modeling.  
+- Pre-deidentified clinical notes ensure compliance with data privacy regulations.  
+
+---
+
 ## Methodological Framework
 
 ### **1. Clinical Interpretability Workflow**
@@ -67,8 +87,6 @@ Due to computational constraints, the transformer architecture is optimized for 
   - **Gradient Accumulation & Checkpointing:** Enables batch size scaling while maintaining memory efficiency.
   - **Mixed Precision (FP16):** Reduces memory footprint by 50%, improving training scalability.
   - **Focal Loss Implementation:** Adjusts class imbalance dynamically, focusing learning on rare disease progression cases.
-
-Using these optimization techniques, ClinicalBERT can be trained efficiently while maintaining state-of-the-art performance in disease progression modeling.  
 
 ---
 

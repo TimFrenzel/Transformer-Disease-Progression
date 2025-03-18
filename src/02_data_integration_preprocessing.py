@@ -1,19 +1,17 @@
 """
-Version: v1.4
-Author: 
+Version: v1.40
 Date: March 2025
 
 Purpose:
     - Integrate MIMIC-IV note data with MIMIC-IV on FHIR data into a DuckDB database
-    - Focus on sepsis and pneumonia diagnoses (plus relevant patients)
+    - Focus on sepsis and pneumonia diagnoses
     - Preprocess clinical text: remove boilerplate, de-identify, fix OCR errors, tokenize
-    - Create disease progression labels, if desired
+    - Create disease progression labels
     - Provide a unified data source (DuckDB) for downstream modeling
 
 Input:
     - MIMIC-IV note files (e.g., discharge.csv.gz, radiology.csv.gz) 
     - MIMIC-IV on FHIR NDJSON files (MimicPatient, MimicEncounter, MimicCondition)
-    - Developer placeholders for file paths and parameters
 
 Output:
     - A DuckDB database with integrated tables (patients, encounters, conditions, discharge_notes)
@@ -105,7 +103,7 @@ def process_patient_data(con, patient_file):
         logging.info("patients table already has %d records, skipping reload.", existing_count)
         return
 
-    batch_size = 10000
+    batch_size = 10000 # <<< Default Placeholders!
     records_buffer = []
     records_processed = 0
 
