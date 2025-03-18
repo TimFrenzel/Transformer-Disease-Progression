@@ -90,6 +90,14 @@ Due to computational constraints, the transformer architecture is optimized for 
 
 ---
 
+## Time-Series Insights into Pneumonia-to-Sepsis Progression
+
+![Admission Timelines](images/selected_patients_timeline.png)  
+
+This visualization presents the health trajectories of selected patients, mapping their progression from pneumonia to sepsis over multiple hospital admissions. Each horizontal line represents a patient, with hospital visits plotted along the x-axis as days since their first admission. Color-coded markers indicate different diagnoses and reveal patterns where patients initially hospitalized with pneumonia (blue) later develop sepsis (red). Cases where pneumonia and sepsis appear together (purple) suggest critical illness at admission. This figure illustrates the project's main goal—ClinicalBERT embeddings and structured ICD-10 codes help identify high-risk patients early, giving clinicians the opportunity to intervene before severe complications develop.
+
+---
+
 ## Ethical Considerations and Data Usage
 
 This research adheres to MIMIC-IV Data Use Agreements (DUA) to ensure patient privacy and compliance with regulatory guidelines. No patient data is shared in this repository, and all data must be accessed through PhysioNet under controlled conditions.
