@@ -82,7 +82,7 @@ Due to computational constraints, the transformer architecture is optimized for 
 ![Memory-Optimized Transformer Implementation](images/memory_optimized_transformer_implementation.jpg)
 
 - **ClinicalBERT Base:** Pre-trained on a medical corpus with 12 attention heads and 768 hidden dimensions, optimized for clinical narratives.
-- **Custom Classification Head:** Incorporates structured ICD features** and section-aware token processing.
+- **Custom Classification Head:** Incorporates structured ICD features and section-aware token processing.
 - **Memory Optimization Techniques:**
   - **Gradient Accumulation & Checkpointing:** Enables batch size scaling while maintaining memory efficiency.
   - **Mixed Precision (FP16):** Reduces memory footprint by 50%, improving training scalability.
